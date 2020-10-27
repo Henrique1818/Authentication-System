@@ -1,13 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const router = require('./routes/SingUp');
+const router = require('./routes/User');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/singup', router);
+app.use('/rest', router);
 
 app.use((req, res, next) => {
     const error = new Error('Não encontrado');
