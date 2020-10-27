@@ -1,6 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const router = require('./routes/SingUp');
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use('/singup', router);
 

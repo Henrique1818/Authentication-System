@@ -1,15 +1,12 @@
 const express = require('express');
 const { route } = require('../app');
+const User = require('../app/controllers/User');
+
 const router = express.Router();
 
-router.post('/teste', (req, res) => {
-    res.status(200).send({
-        mensagem: 'ok deu certo Criado o POST'
-    });
+router.post('/usuario', User.create);
 
-})
-
-router.get('/teste', (req, res) => {
+router.get('/usuario', (req, res) => {
     res.status(200).send({
         mensagem: 'ok deu certo'
     })
