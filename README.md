@@ -23,7 +23,7 @@
 
 ## About
 
-describe a summary of your project and what it does.
+Challenge proposed to create an APIRestFull, user authentication
 
 
 ---
@@ -41,24 +41,24 @@ describe a summary of your project and what it does.
 - **Frontend:** --
 
 - **Backend:**
-    - [Node.js](Node.js)
+    - [Node.js](https://nodejs.org/en/)
     - Frameworks:
-        - [Express.js](Express.js)
-    - Libraries and Packages:
-        - [Nodemon](Nodemon)
-        - [Body-parser](Body-parser)
-        - [bcryptjs](bcryptjs)
-        - [JWT](jsonwebtoken)
-        - [Date-fns](Date-fns)
-        - [Mongoose](Mongoose)
-        - [Mongoose](Mongoose)
+        - [Express.js](https://expressjs.com/)
+    - Libraries, Packages and Package Managed:
+        - [NPM](https://www.npmjs.com/)
+        - [Nodemon](https://nodemon.io/)
+        - [Body-parser](https://www.npmjs.com/package/body-parser)
+        - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+        - [JWT](https://jwt.io/)
+        - [Date-fns](https://date-fns.org/)
+        - [Mongoose](https://mongoosejs.com/)
 
 - **Database:**
-    - [MongoDB](MongoDB)
-    - [Docker](Docker)
+    - [MongoDB](https://www.mongodb.com/)
+    - [Docker](https://www.docker.com/)
 
 - **Deploy:**
-    - [Heroku](Heroku)
+    - [Heroku](https://www.heroku.com/)
 
 ---
 
@@ -66,7 +66,7 @@ describe a summary of your project and what it does.
 
 ### Requirements
 
-> Have [Node.js](pageHome-node) installed on the machine.
+> Have [Node.js](https://nodejs.org/en/) installed on the machine.
 
 
 ### How to install
@@ -113,7 +113,25 @@ or
 
 ### EndPoints
 
-> Singup: http://localhost:3000/rest/singup
+> Sing Up User: http://localhost:3000/rest/singin
+
+```
+
+```
+
+> Sing In: http://localhost:3000/rest/singup
+
+```
+
+```
+
+> Seeking User: http://localhost:3000/rest/:id
+
+```
+
+```
+
+> Updating User: http://localhost:3000/rest/:email
 
 ```
 
