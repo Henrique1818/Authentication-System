@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const User = require("../models/User");
+const User = require('../models/User');
 const authConfig = require('../../config/authConfig.json');
 
 
@@ -14,13 +14,12 @@ function generateToken(params = {}) {
 module.exports = {
     async create(req, res) {
         try {
-            const { email } = req.body
+            const { email } = req.body;
 
             if(await User.findOne({ email }))
                 return res.status(400).json({ error: 'E-mail já existente'});
 
             const user = await User.create(req.body);
-            user.senha = undefined;
             
             return res.status(201).json({
                 user,
@@ -68,16 +67,11 @@ module.exports = {
             let user = await User.findOne({ email });
             let hash = await bcrypt.hash(req.body.senha, 10);
 
-            /* user.senha = undefined */
-            console.log(user)
-            
             await user.updateOne({
                 ...req.body,
                 senha: hash,
                 dataAtualizacao: current
             });
-
-            console.log(user)
 
             return res.status(200).json({
                 user,
@@ -87,6 +81,15 @@ module.exports = {
         catch(err) {
             return res.status(404).json({ mensagem: 'Usuário não encontrado'});
         }
+    },
+    async seekingUser(req, res) {
+        const { id } = req.params;
+        const token = req.headers.authorization
 
+        console.log(token)
+
+        let user = await User.findOne({_id: id});
+        
+        return res.status(200).json(user)
     }
-}
+};
