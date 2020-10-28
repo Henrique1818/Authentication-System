@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./img/authentication.svg" alt="Project RestAPI" width="200" height="200">
+<img src="./img/authentication.svg" alt="Project RestAPI" width="400" height="400">
 
 <br />
 <h2>Authentication System</h2>
@@ -56,6 +56,10 @@ describe a summary of your project and what it does.
 - **Database:**
     - [MongoDB](MongoDB)
     - [Docker](Docker)
+
+- **Deploy:**
+    - [Heroku](Heroku)
+
 ---
 
 ## How to use
@@ -105,8 +109,15 @@ or
     npm start
 ```
 
-> 6. Open your browser! The name-project will be available at http://localhost:3000/rest/singup
+> 6. Open your browser! The RestAPI will be available at http://localhost:3000/rest/singup
 
+### EndPoints
+
+> Singup: http://localhost:3000/rest/singup
+
+```
+
+```
 
 ---
 
