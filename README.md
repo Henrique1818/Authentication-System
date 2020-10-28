@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./img/authentication.svg" alt="Project RestAPI" width="400" height="400">
+<img src="./img/authentication.svg" alt="Project RestAPI" width="300" height="250">
 
 <br />
 <h2>Authentication System</h2>
