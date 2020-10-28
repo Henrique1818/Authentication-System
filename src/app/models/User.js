@@ -46,6 +46,13 @@ UserSchema.pre('save', async function(next) {
     next();
 });
 
+/* UserSchema.pre('updateOne', async function(next) {
+    const hash = await bcrypt.hash(this.senha, 10);
+    this.senha = hash;
+
+    next();
+}); */
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
