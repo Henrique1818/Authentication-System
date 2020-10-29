@@ -22,7 +22,7 @@ module.exports = {
             
             let newUser = await User();
 
-           newUser = await User.create({
+            newUser = await User.create({
                 ...req.body,
                 token: generateToken({ id: newUser._id })
             });
