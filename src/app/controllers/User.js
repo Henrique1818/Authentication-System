@@ -19,12 +19,16 @@ module.exports = {
             if(await User.findOne({ email })) {
                 return res.status(400).json({ error: 'E-mail already exists'});
             } 
+            
+            let newUser = await User();
 
-            const user = await User.create(req.body);
+           newUser = await User.create({
+                ...req.body,
+                token: generateToken({ id: newUser._id })
+            });
             
             return res.status(201).json({
-                user,
-                token: generateToken({ id: user._id })
+                newUser
             });
         }
         catch(err) {
