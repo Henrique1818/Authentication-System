@@ -34,7 +34,7 @@ Challenge proposed to create an APIRestFull, user authentication
 ![Project Image](project-image)
 ![Project Image](project-image)
 
-> [View demo](view-demo-project)
+> [Deploy Heroku](view-demo-project)
 
 ## Technology used
 
