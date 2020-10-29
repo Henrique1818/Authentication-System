@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const url = 'mongodb+srv://omnistack:omnistack@cluster0-z2kun.mongodb.net/library?retryWrites=true&w=majority';
+const url = 'mongodb://localhost:27017/RestAPI';
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
