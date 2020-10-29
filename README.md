@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./img/authentication.svg" alt="Project RestAPI" width="300" height="250">
+<img src="https://user-images.githubusercontent.com/56804642/97494386-ff804900-1944-11eb-83be-480431ca0037.png" alt="Project RestAPI" width="300" height="250">
 
 <br />
 <h2>Authentication System</h2>
@@ -48,9 +48,8 @@ Challenge proposed to create an APIRestFull, user authentication
         - [NPM](https://www.npmjs.com/)
         - [Nodemon](https://nodemon.io/)
         - [Body-parser](https://www.npmjs.com/package/body-parser)
-        - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+        - [Bcryptjs](https://www.npmjs.com/package/bcryptjs)
         - [JWT](https://jwt.io/)
-        - [Date-fns](https://date-fns.org/)
         - [Mongoose](https://mongoosejs.com/)
 
 - **Database:**
@@ -109,31 +108,56 @@ or
     npm start
 ```
 
-> 6. Open your browser! The RestAPI will be available at http://localhost:3000/rest/singup
+> 6. Open your browser! The RestAPI will be available at http://localhost:3000/singup
 
 ### EndPoints
 
-> Sing Up User: http://localhost:3000/rest/singin
+> POST - Sing Up User: http://localhost:3000/singin
 
 ```
-
+    {
+        "nome": "henrique",
+        "email": "henrique@teste.com",
+        "senha": "123456",
+        "telefones": [
+            {
+                "numero": 912345678,
+                "DDD": 11
+            },
+            {
+                "numero": 20202020,
+                "DDD": 14
+            }
+        ]
+    }
 ```
 
-> Sing In: http://localhost:3000/rest/singup
+> GET - Sing In: http://localhost:3000/singup
 
 ```
-
+    {
+        "email": "henrique@teste.com",
+        "senha": "123456"
+    }
 ```
 
-> Seeking User: http://localhost:3000/rest/:id
+> GET - Seeking User: http://localhost:3000/:id
+
+
+> PUT - Updating User: http://localhost:3000/henrique@teste.com
 
 ```
-
-```
-
-> Updating User: http://localhost:3000/rest/:email
-
-```
+    {
+        "nome": "Luiz henrique",
+        "email": "henrique@teste.com",
+        "senha": "1234",
+        "telefones": [
+            {
+                "numero": 912345611,
+                "DDD": 14
+            }
+        ]
+    }
 
 ```
 

@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema({
     },
     ultimoLogin: {
         type: Date
+    },
+    token: {
+        type: String,
+        required: true
     }
 });
 

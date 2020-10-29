@@ -17,17 +17,19 @@ module.exports = {
             const { email } = req.body;
 
             if(await User.findOne({ email }))
-                return res.status(400).json({ error: 'E-mail já existente'});
+                return res.status(400).json({ error: 'E-mail already exists'});
 
-            const user = await User.create(req.body);
+            const user = await User.create({
+                ...req.body,
+                token: generateToken({ id: user._id })
+            });
             
             return res.status(201).json({
-                user,
-                token: generateToken({ id: user._id }),
+                user
             });
         }
         catch(err) {
-            return res.status(500).json({ error: 'Registration failed'});
+            return res.status(400).json({ error: 'Registration failed'});
         }
     },
     async login(req, res) {
@@ -35,28 +37,29 @@ module.exports = {
             const current = new Date().toLocaleString();
             const { email, senha } = req.body;
 
-            const user = await User.findOne({ email }).select('+senha');
+            let user = await User.findOne({ email }).select('+senha');
 
             if(!user)
-                return res.status(401).json({ mensagem: 'Usuário e ou/ senha inválidos'});
+                return res.status(401).json({ error: 'Invalid username and / or password'});
 
             if(!await bcrypt.compare(senha, user.senha))
-                return res.status(403).json({ mensagem: 'Usuário e ou/ senha inválidos'});
+                return res.status(403).json({ mensagem: 'Invalid username and / or password'});
 
             await user.updateOne({
                 user,
-                ultimoLogin: current
+                ultimoLogin: current,
+                token: generateToken({ id: user._id })
             });
 
+            user = await User.findOne({ email }).select('+senha');
             user.senha = undefined;
-            
+
             res.status(200).json({
-                user,
-                token: generateToken({ id: user._id })
+                user
             });
         }
         catch(err) {
-            return res.status(500).json({ error: 'Registration failed'});
+            return res.status(400).json({ error: 'Login failed'});
         }
     },
     async update(req, res) {
@@ -65,31 +68,51 @@ module.exports = {
             const current = new Date().toLocaleString();
 
             let user = await User.findOne({ email });
+
+            if(!user) return res.status(404).json({ error: 'User not found'});
+
             let hash = await bcrypt.hash(req.body.senha, 10);
 
             await user.updateOne({
                 ...req.body,
                 senha: hash,
-                dataAtualizacao: current
+                dataAtualizacao: current,
+                token: generateToken({ id: user._id }),
             });
 
+            user = await User.findOne({ email });
+
             return res.status(200).json({
-                user,
-                token: generateToken({ id: user._id }),
+                user
             });
         }
         catch(err) {
-            return res.status(404).json({ mensagem: 'Usuário não encontrado'});
+            return res.status(400).json({ error: 'Update failed'});
         }
     },
     async seekingUser(req, res) {
-        const { id } = req.params;
-        const token = req.headers.authorization
+        try {
+            const { id } = req.params;
+            let [, token] = req.headers.authorization.split(' ');
 
-        console.log(token)
+            let user = await User.findOne({_id: id});
 
-        let user = await User.findOne({_id: id});
-        
-        return res.status(200).json(user)
+            if(await user.token !== token) {
+                return res.status(403).json({ error: 'Not authorized'});
+            }
+            
+            if(await user.token === token) { 
+                console.log(user.ultimoLogin.toLocaleString())
+                let diff = Math.round((Date.now() - user.ultimoLogin) / (1000 * 60));
+                console.log(diff)
+
+                if(diff <= 30) return res.status(200).json(user);
+                
+                else return res.status(401).json({ error: 'Invalid session'});
+            }
+        }
+        catch(err) {
+            return res.status(400).json({ error: 'Search failed'})
+        }
     }
 };

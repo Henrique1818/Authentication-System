@@ -7,7 +7,7 @@ const router = require('./routes/User');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/rest', router);
+app.use(router);
 
 app.use((req, res, next) => {
     const error = new Error('Não encontrado');
