@@ -1,17 +1,27 @@
 const request = require('supertest');
-const { path } = require('./app');
 const app = require('./app');
 
 describe('Test My app server', () => {
     it('should get main route', async () => {
         const res = await request(app)
-        .get('/singin')
+        .post('/singup')
         .send({
-            email: 'henrique@test.com',
-            senha: '123456'
+            nome: "henrique",
+            email: "henrique@teste.com",
+            senha: "123456",
+            telefones: [
+                {
+                    numero: 912345678,
+                    DDD: 11
+                },
+                {
+                    numero: 20202020,
+                    DDD: 14
+                }
+            ]
         })
 
-        /* expect(res.statusCode).toEqual(200) */
+        expect(res.statusCode).toEqual(200)
         /* expect(res.body).toContain('nome'); */
     })
 })

@@ -16,16 +16,15 @@ module.exports = {
         try {
             const { email } = req.body;
 
-            if(await User.findOne({ email }))
+            if(await User.findOne({ email })) {
                 return res.status(400).json({ error: 'E-mail already exists'});
+            } 
 
-            const user = await User.create({
-                ...req.body,
-                token: generateToken({ id: user._id })
-            });
+            const user = await User.create(req.body);
             
             return res.status(201).json({
-                user
+                user,
+                token: generateToken({ id: user._id })
             });
         }
         catch(err) {
@@ -102,9 +101,7 @@ module.exports = {
             }
             
             if(await user.token === token) { 
-                console.log(user.ultimoLogin.toLocaleString())
                 let diff = Math.round((Date.now() - user.ultimoLogin) / (1000 * 60));
-                console.log(diff)
 
                 if(diff <= 30) return res.status(200).json(user);
                 
