@@ -12,6 +12,9 @@ function generateToken(params = {}) {
 };
 
 module.exports = {
+    async redirect(req, res) {
+        return res.redirect('/singin')
+    },
     async create(req, res) {
         try {
             const { email } = req.body;
