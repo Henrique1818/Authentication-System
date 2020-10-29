@@ -50,6 +50,8 @@ Challenge proposed to create an APIRestFull, user authentication
         - [Body-parser](https://www.npmjs.com/package/body-parser)
         - [Bcryptjs](https://www.npmjs.com/package/bcryptjs)
         - [JWT](https://jwt.io/)
+        - [Jest](https://jestjs.io/)
+        - [Supertest](https://www.npmjs.com/package/supertest)
         - [Mongoose](https://mongoosejs.com/)
 
 - **Database:**

@@ -2,12 +2,12 @@ const request = require('supertest');
 const app = require('./app');
 
 describe('Test My app server', () => {
-    it('verificando se o email exit', async () => {
+    it('verificando se o email existe', async () => {
         const res = await request(app)
         .post('/singup')
         .send({
             nome: "luiz",
-            email: "luiz2@teste.com",
+            email: "luiz4@teste.com",
             senha: "123456",
             telefones: [
                 {
@@ -62,7 +62,7 @@ describe('Test My app server', () => {
         .get('/singin')
         .send({
             email: "luiz2@teste.com",
-            senha: "1234567"
+            senha: "123456"
         })
 
         expect(res.statusCode).toEqual(403)
@@ -73,7 +73,7 @@ describe('Test My app server', () => {
         .get('/singin')
         .send({
             email: "luiz2@teste.com",
-            senha: "123456"
+            senha: "1234567"
         })
 
         expect(res.statusCode).toEqual(200)
@@ -97,9 +97,9 @@ describe('Test My app server', () => {
         expect(res.statusCode).toEqual(404)
     }),
 
-    it('retornando usuário não encontrado', async () => {
+    it('atualização de usuário', async () => {
         const res = await request(app)
-        .put('/luiz2@teste.com.br')
+        .put('/luiz2@teste.com')
         .send({
             nome: "luiz",
             email: "luiz2@teste.com",
