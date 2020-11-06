@@ -112,11 +112,11 @@ or
     npm start
 ```
 
-> 6. Open your browser! The RestAPI will be available at http://localhost:3000/singup
+> 6. Open your browser! The RestAPI will be available at http://localhost:3000/singin
 
 ### EndPoints
 
-> POST - Sing Up User: http://localhost:3000/singin
+> POST - Sing Up User: http://localhost:3000/singup
 
 ```
     {
@@ -136,7 +136,7 @@ or
     }
 ```
 
-> GET - Sing In: http://localhost:3000/singup
+> GET - Sing In: http://localhost:3000/singin
 
 ```
     {
