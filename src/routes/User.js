@@ -1,13 +1,13 @@
-const express = require('express');
-const { route } = require('../app');
+const { Router } = require('express');
+
 const User = require('../app/controllers/User');
 const Auth = require('../app/middlewares/Auth');
 
-const router = express.Router();
+const routes = Router();
 
-router.get('/singin', User.login);
-router.get('/:id', Auth, User.seekingUser)
-router.post('/singup', User.create);
-router.put('/:email', User.update);
+routes.get('/singin', User.login);
+routes.get('/:id', Auth, User.seekingUser)
+routes.post('/singup', User.create);
+routes.put('/:email', User.update);
 
-module.exports = router;
+module.exports = routes;
