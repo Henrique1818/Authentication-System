@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     if(!/^Bearer$/i.test(schema)) return res.status(401).send({ error: 'Token malformatted' });
 
     jwt.verify(token, authConfig, (err, decoded) => {
-        if(err) return res.status(401).send({ error: 'Token invalid' });
+        if(err) return res.status(401).send({ error: `Token invalid, ${err}` });
 
         req.userId = decoded.id;
 
