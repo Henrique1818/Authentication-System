@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
+const current = new Date();
+
 function generateToken(params = {}) {
     return jwt.sign(params, process.env.SECRET_AUTHCONFIG, {
         expiresIn: 1800,
@@ -26,7 +28,6 @@ class UserSvc {
     async getLogin(req, res) {
         try {
             const { email, senha } = req.body;
-            const current = new Date();
 
             let user = await User.findOne({ email }).select('+senha').lean();
 
@@ -52,107 +53,65 @@ class UserSvc {
             const { id } = req.params;
             let [, token ] = req.headers.authorization.split(' ');
 
-            let user = await User.findOne({_id: id}).lean();
+            let user = await User.findOne({ _id: id }).lean();
             
             // 30min
             let limitTime = Math.round((Date.now() - user.ultimoLogin) / (1000 * 60));
 
             const verifyToken = user.token === token;
 
-            if (!verifyToken) return res.status(403).json({ error: 'Not authorized'});
+            if (!verifyToken) return res.status(403).json({ error: 'Not authorized' });
 
             switch(verifyToken) {
                 case limitTime <= 30: 
                     return res.status(200).json(user);
                 default: 
-                    return res.status(401).json({ error: 'Invalid session'});
+                    return res.status(401).json({ error: 'Invalid session' });
             }
         }
         catch(err) {
-            return res.status(400).json({ error: 'Search failed'})
+            return res.status(400).json({ error: `Search failed, ${err}` })
         }
     }
 
-    // async update(req, res) {
-    //     try {
-    //         const { email } = req.body;
-    //         const current = new Date().toLocaleString();
-    //         let hash = await bcrypt.hash(req.body.senha, 10);
+    async update(req, res) {
+        try {
+            const { email, senha } = req.body;
+            current.toLocaleString();
+            let hash = await bcrypt.hash(senha, 10);
 
-    //         const foundUser = await User.findOne({email}).lean();
+            const user = await User.findOne({ email }).lean();
+            if(!user) return res.status(404).json({ error: 'User not found!'});
 
-    //         if(!foundUser) return res.status(404).json({ error: 'User not found!'});
+            const update = {
+                ...req.body,
+                senha: hash,
+                dataAtualizacao: current,
+                token: generateToken({ id: user._id })
+            }
 
-    //         const update = {
-    //             ...req.body,
-    //             senha: hash,
-    //             dataAtualizacao: current,
-    //             token: generateToken({ id: foundUser._id })
-    //         }
+            const updateUser = await User.findOneAndUpdate(
+                { _id: user._id }, update, { new: true, upsert: true }
+            ).lean();
 
-    //         let user = User.updateOne({'_id': foundUser._id}, update)
+            return res.status(200).json(updateUser);
+        }
+        catch(err) {
+            return res.status(400).json({ error: `Update error, ${err}` });
+        }
+    }
 
-    //         console.log("atualização", user)
-    //     }
-    //     catch(err) {
-    //         return res.status(400).json({error: 'Update error'});
-    //     }
-    // }
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            
+            await User.findByIdAndDelete({ _id: id }).lean();
+            
+            return res.status(200).json({ message: `Deleted user` })
+        } catch (err) {
+            return res.status(400).json({ error: `Failed to delete, ${err}` });
+        }
+    }
 }
 
 module.exports = new UserSvc();
-
-
-// module.exports = {
-//     async update(req, res) {
-//         try {
-//             const { email } = req.params;
-//             const current = new Date().toLocaleString();
-
-//             let user = await User.findOne({ email });
-
-//             if(!user) return res.status(404).json({ error: 'User not found'});
-
-//             let hash = await bcrypt.hash(req.body.senha, 10);
-
-//             await user.updateOne({
-//                 ...req.body,
-//                 senha: hash,
-//                 dataAtualizacao: current,
-//                 token: generateToken({ id: user._id }),
-//             });
-
-//             user = await User.findOne({ email });
-
-//             return res.status(200).json({
-//                 user
-//             });
-//         }
-//         catch(err) {
-//             return res.status(400).json({ error: 'Update failed'});
-//         }
-//     },
-//     async seekingUser(req, res) {
-//         try {
-//             const { id } = req.params;
-//             let [, token] = req.headers.authorization.split(' ');
-
-//             let user = await User.findOne({_id: id});
-
-//             if(await user.token !== token) {
-//                 return res.status(403).json({ error: 'Not authorized'});
-//             }
-            
-//             if(await user.token === token) { 
-//                 let diff = Math.round((Date.now() - user.ultimoLogin) / (1000 * 60));
-
-//                 if(diff <= 30) return res.status(200).json(user);
-                
-//                 else return res.status(401).json({ error: 'Invalid session'});
-//             }
-//         }
-//         catch(err) {
-//             return res.status(400).json({ error: 'Search failed'})
-//         }
-//     }
-// };
