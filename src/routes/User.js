@@ -5,9 +5,9 @@ const Auth = require('../app/middlewares/Auth');
 
 const routes = Router();
 
-routes.get('/singin', UserSvc.getLogin);
-// routes.get('/:id', Auth, User.seekingUser)
-routes.post('/singup', UserSvc.createUser);
-// routes.put('/:email', User.update);
+routes.get('admin/singin', UserSvc.getLogin);
+routes.get('admin/:id', Auth, UserSvc.searchForUser)
+routes.post('admin/singup', UserSvc.create);
+// routes.put('/:email', UserSvc.update);
 
 module.exports = routes;
