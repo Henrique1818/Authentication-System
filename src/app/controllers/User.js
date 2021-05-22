@@ -13,79 +13,72 @@ class UserSvc {
     async createUser(req, res) {
         try {
             const { email } = req.body;
-
-            let findUser = await User.find({ email });
-
-            if(!findUser) return res.status(400).json({ message: 'E-mail already exists!' });
+            let user = await User.find({ email }).exec();
             
-            const newUser = await User.create({ ...req.body, token: generateToken({ id: findUser._id }) }, { new: true });
-
-            return res.status(201).json({ newUser });
+            const newUser = User.create({ ...req.body, token: generateToken({ id: user._id }) });
+            
+            return res.status(201).json(await newUser);
         } catch (err) {
-            return res.status(400).json({ error: 'Registration failed' });
+            return res.status(400).json({ error: `Registration failed, ${err}` });
         }
     }
 
-    async getLogin(req, res) {
-        try {
-            const { email, senha } = req.body;
-            const current = new Date().toLocaleString();
+    // async getLogin(req, res) {
+    //     try {
+    //         const { email, senha } = req.body;
+    //         const current = new Date().toLocaleString();
 
-            let user = await User.findOne({ email }).select('+senha');
+    //         let user = await User.findOne({ email }).select('+senha');
 
-            if(!user || !await bcrypt.compare(senha, user.senha)) return res.status(403).json({ error: 'Invalid username and / or password' });
+    //         if(!user || !await bcrypt.compare(senha, user.senha)) return res.status(403).json({ error: 'Invalid username and / or password' });
 
-            await user.updateOne({
-                user,
-                ultimoLogin: current,
-                token: generateToken({ id: user._id })
-            }, { new: false, upsert: true });
+    //         await user.updateOne({
+    //             ...user,
+    //             ultimoLogin: current,
+    //             token: generateToken({ id: user._id })
+    //         }, { new: false, upsert: true });
 
-            user = await User.findOne({ email }).select('+senha');
-            user.senha = undefined;
+    //         user = await User.findOne({ email }).select('+senha');
+    //         user.senha = undefined;
 
-            return res.status(200).json({ user });
+    //         return res.status(200).json({ user });
 
-        } catch(err) {
-            return res.status(400).json({ error: 'Login failed'});
-        }
-    }
+    //     } catch(err) {
+    //         return res.status(400).json({ error: 'Login failed'});
+    //     }
+    // }
+
+    // async update(req, res) {
+    //     try {
+    //         const { email } = req.body;
+    //         const current = new Date().toLocaleString();
+    //         let hash = await bcrypt.hash(req.body.senha, 10);
+
+    //         const foundUser = await User.findOne({email}).lean();
+
+    //         if(!foundUser) return res.status(404).json({ error: 'User not found!'});
+
+    //         const update = {
+    //             ...req.body,
+    //             senha: hash,
+    //             dataAtualizacao: current,
+    //             token: generateToken({ id: foundUser._id })
+    //         }
+
+    //         let user = User.updateOne({'_id': foundUser._id}, update)
+
+    //         console.log("atualização", user)
+    //     }
+    //     catch(err) {
+    //         return res.status(400).json({error: 'Update error'});
+    //     }
+    // }
 }
 
 module.exports = new UserSvc();
 
 
 // module.exports = {
-//     async login(req, res) {
-//         try {
-//             const current = new Date().toLocaleString();
-//             const { email, senha } = req.body;
-
-//             let user = await User.findOne({ email }).select('+senha');
-
-//             if(!user)
-//                 return res.status(401).json({ error: 'Invalid username and / or password'});
-
-//             if(!await bcrypt.compare(senha, user.senha))
-//                 return res.status(403).json({ mensagem: 'Invalid username and / or password'});
-
-//             await user.updateOne({
-//                 user,
-//                 ultimoLogin: current,
-//                 token: generateToken({ id: user._id })
-//             });
-
-//             user = await User.findOne({ email }).select('+senha');
-//             user.senha = undefined;
-
-//             res.status(200).json({
-//                 user
-//             });
-//         }
-//         catch(err) {
-//             return res.status(400).json({ error: 'Login failed'});
-//         }
-//     },
 //     async update(req, res) {
 //         try {
 //             const { email } = req.params;
