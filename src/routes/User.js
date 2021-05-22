@@ -8,7 +8,7 @@ const routes = Router();
 routes.get('/admin/singin', UserSvc.getLogin);
 routes.get('/admin/:id', Auth, UserSvc.searchForUser)
 routes.post('/admin/singup', UserSvc.create);
-routes.put('/admin/:email', UserSvc.update);
+routes.put('/admin/update', UserSvc.update);
 routes.delete('/admin/:id', UserSvc.delete);
 
 module.exports = routes;
